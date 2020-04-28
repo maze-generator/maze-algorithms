@@ -1,0 +1,16 @@
+{
+	"name": "maze-algorithms",
+	"version": "0.0.1",
+	"description": "Maze Algorithms provides various functions to create different mazes.",
+	"main": "lib/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"maze",
+		"generator",
+		"algorithms"
+	],
+	"author": "noltron000",
+	"license": "MIT"
+}
