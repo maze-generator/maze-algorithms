@@ -2,15 +2,28 @@
 	"name": "maze-algorithms",
 	"version": "0.0.1",
 	"description": "Maze Algorithms provides various functions to create different mazes.",
-	"main": "lib/index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
 	"keywords": [
 		"maze",
 		"generator",
 		"algorithms"
 	],
+	"license": "MIT",
 	"author": "noltron000",
-	"license": "MIT"
+	"homepage": "https://github.com/noltron000/maze-algorithms#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/noltron000/maze-algorithms.git"
+	},
+	"bugs": {
+		"url": "https://github.com/noltron000/maze-algorithms/issues"
+	},
+	"main": "lib/index.js",
+	"dependencies": {},
+	"devDependencies": {
+		"ts-node": "^8.9.0",
+		"typescript": "^3.8.3"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	}
 }
