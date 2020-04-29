@@ -1,9 +1,9 @@
-import Graph, {Cell} from 'tessellatron'
+import {HypercubeGraph, Cell} from 'tessellatron'
 import {shuffle} from '../random'
 
 
 export const recursiveDFT = (
-	graph: Graph,
+	graph: HypercubeGraph,
 	id01: number,
 ): void => {
 
