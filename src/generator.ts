@@ -1,15 +1,15 @@
 import Graph, {Cell} from 'tessellatron'
-import {shuffle} from '../helpers/main'
+import {shuffle} from './main'
 
 /*********DEPTH-FIRST SEARCH*****************************/
 
-export const recursiveDFS = (
-	maze: Graph,
+export const recursiveDFT = (
+	graph: Graph,
 	id01: number,
 ): void => {
 
 	// create cell from id.
-	const cell01: Cell = maze.data[id01]
+	const cell01: Cell = graph.data[id01]
 
 	// mark self as 'active'.
 	cell01.status = 'active'
@@ -26,24 +26,27 @@ export const recursiveDFS = (
 
 		// ensure neighbor exists
 		if (id02 !== null) {
-			const cell02: Cell = maze.data[id02]
+			const cell02: Cell = graph.data[id02]
 
 			// check for unvisited neighbors.
 			if (cell02.status === 'unvisited') {
 
 				// connect the cells
-				maze.connectNeighbor(direction, id01, id02)
-				maze.connectPassage(direction, id01, id02)
+				graph.connectNeighbor(direction, id01, id02)
+				graph.connectPassage(direction, id01, id02)
 
 				// transfer 'active' state to id02.
 				cell01.status = 'passive'
 
 				// recursively call with new neighbor.
-				recursiveDFS(maze, id02)
-			}
+				recursiveDFT(graph, id02)
 
-			// mark self as 'active'.
-			cell01.status = 'active'
+				// mark self as 'active' once complete.
+				cell01.status = 'active'
+
+				// TODO: await command to continue.
+				// ...
+			}
 		}
 	}
 
@@ -179,21 +182,3 @@ export const recursiveDFS = (
 		if n > 0:
 			self.aerate_maze(n)
 */
-
-/***********************************************************
-This section describes footnotes & comments for the project.
-These should mostly contain bugs and todo items.
-
-== TODO ==
-Maze array should have a fixed size:
-size = maze length × maze height
-
-== TODO ==
-Maze class only supports 2D-Square mazes.
-Add support for ND-polyhedral mazes.
-
-== TODO ==
-Maze class only supports breadth-first traversal.
-Add support for other maze-generation algorithms.
-
-***********************************************************/
