@@ -1,6 +1,16 @@
+import Graph from 'tessellatron'
+import {recursiveDFT} from './generator/depth-first-traversal'
+
+export default class Maze extends Graph {
+	constructor (
+		dimensions: Array<number>,
+	) {
+		super(dimensions)
+		recursiveDFT(this, 0)
+	}
+}
 
 /*
-
 	def shortest_path_bfs(self, paths=None, A=None, B=None):
 		'''
 		A = given starting node

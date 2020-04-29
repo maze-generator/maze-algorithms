@@ -1,5 +1,5 @@
 import Graph, {Cell} from 'tessellatron'
-import {shuffle} from './main'
+import {shuffle} from '../random'
 
 
 export const recursiveDFT = (
