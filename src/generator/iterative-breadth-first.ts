@@ -1,33 +1,24 @@
 import {HypercubeGraph, Cell} from 'tessellatron'
-import {shuffle} from '../random'
-
+import {Queue, shuffle} from 'maze-utilities'
 
 export const iterativeBFT = (
 	graph: HypercubeGraph,
 	id: number,
 ) => {
-	// create a stack to iterate through.
+
+	// create a queue to iterate with.
 	// this cannot be modified directly.
 	// instead, use enqueue, dequeue, and peek.
-	const queue: Array<number> = []
-
-	// pop removes one from the "front" of the queue.
-	const dequeue = (): void => {queue.shift()}
-
-	// push adds to the "back" of the queue.
-	const enqueue = (item: number): void => {queue.push(item)}
-
-	// peek displays the "front" of the queue.
-	const peek = (): number => queue[0]
+	const queue: Queue<number> = new Queue()
 
 	// add initial ID to queue.
-	enqueue(id)
+	queue.enqueue(id)
 
 	// loop through stack until it is empty.
-	while (queue.length > 0) {
+	while (queue.hasNodes) {
 
 		// peek this number from the stack.
-		const id01: number = peek()
+		const id01: number = queue.front()
 
 		// identify current cell.
 		const cell01: Cell = graph.data[id01]
@@ -71,10 +62,11 @@ export const iterativeBFT = (
 					foundUnvisited = true
 
 					// add unvisited neighbor ID to stack.
-					enqueue(id02)
+					queue.enqueue(id02)
 
 					// remove active status;
 					// the next ID will become active now.
+					// eventually, id02 will be called upon again.
 					cell02.status = 'passive'
 
 					// leave loop early since an unvisited was found.
@@ -92,7 +84,7 @@ export const iterativeBFT = (
 
 			// remove id01 from the stack.
 			// id01 is on top, so pop() will remove it.
-			dequeue()
+			queue.dequeue()
 		}
 	}
 }

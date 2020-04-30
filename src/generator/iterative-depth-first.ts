@@ -1,5 +1,5 @@
 import {HypercubeGraph, Cell} from 'tessellatron'
-import {shuffle} from '../random'
+import {Stack, shuffle} from 'maze-utilities'
 
 
 export const iterativeDFT = (
@@ -9,25 +9,16 @@ export const iterativeDFT = (
 	// create a stack to iterate through.
 	// this cannot be modified directly.
 	// instead, use pop, push, and peek.
-	const stack: Array<number> = []
-
-	// pop removes one from the "top" of the stack.
-	const pop = (): void => {stack.pop()}
-
-	// push adds to the "top" of the stack.
-	const push = (item: number): void => {stack.push(item)}
-
-	// peek displays the "top" of the stack.
-	const peek = (): number => stack.slice(-1)[0]
+	const stack: Stack<number> = new Stack()
 
 	// add initial ID to stack.
-	push(id)
+	stack.push(id)
 
 	// loop through stack until it is empty.
-	while (stack.length > 0) {
+	while (stack.hasNodes) {
 
 		// peek this number from the stack.
-		const id01: number = peek()
+		const id01: number = stack.peek()
 
 		// identify current cell.
 		const cell01: Cell = graph.data[id01]
@@ -67,7 +58,7 @@ export const iterativeDFT = (
 					foundUnvisited = true
 
 					// add unvisited neighbor ID to stack.
-					push(id02)
+					stack.push(id02)
 
 					// leave loop early since an unvisited was found.
 					break
@@ -84,7 +75,7 @@ export const iterativeDFT = (
 
 			// remove id01 from the stack.
 			// id01 is on top, so pop() will remove it.
-			pop()
+			stack.pop()
 		}
 	}
 }
