@@ -1,12 +1,13 @@
-import Graph from 'tessellatron'
-import {recursiveDFT} from './generator/depth-first-traversal'
+import {HypercubeGraph} from 'tessellatron'
+import {recursiveDFT} from './generator/recursive-depth-first'
+import {iterativeDFT} from './generator/iterative-depth-first'
 
-export default class Maze extends Graph {
+export default class Maze extends HypercubeGraph {
 	constructor (
 		dimensions: Array<number>,
 	) {
 		super(dimensions)
-		recursiveDFT(this, 0)
+		iterativeDFT(this, 0)
 	}
 }
 

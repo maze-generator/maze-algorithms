@@ -2,54 +2,89 @@ import {HypercubeGraph, Cell} from 'tessellatron'
 import {shuffle} from '../random'
 
 
-export const recursiveDFT = (
+export const iterativeDFT = (
 	graph: HypercubeGraph,
-	id01: number,
-): void => {
+	id: number,
+) => {
+	// create a stack to iterate through.
+	// this cannot be modified directly.
+	// instead, use pop, push, and peek.
+	const stack: Array<number> = []
 
-	// create cell from id.
-	const cell01: Cell = graph.data[id01]
+	// pop removes one from the "top" of the stack.
+	const pop = (): void => {stack.pop()}
 
-	// mark self as 'active'.
-	cell01.status = 'active'
+	// push adds to the "top" of the stack.
+	const push = (item: number): void => {stack.push(item)}
 
-	// TODO: await command to continue.
-	// ...
+	// peek displays the "top" of the stack.
+	const peek = (): number => stack.slice(-1)[0]
 
-	// loop through neighbors in a random order.
-	const eligibleDirs: Array<string> = Object.keys(cell01.neighbors)
-	const randomDirs: Array<string> = shuffle(eligibleDirs)
-	for (const direction of randomDirs) {
+	// add initial ID to stack.
+	push(id)
 
-		// identify the neighbor cell.
-		const id02: number|null = cell01.neighbors[direction]
+	// loop through stack until it is empty.
+	while (stack.length > 0) {
 
-		// ensure neighbor exists
-		if (id02 !== null) {
-			const cell02: Cell = graph.data[id02]
+		// peek this number from the stack.
+		const id01: number = peek()
 
-			// check for unvisited neighbors.
-			if (cell02.status === 'unvisited') {
+		// identify current cell.
+		const cell01: Cell = graph.data[id01]
 
-				// connect the cells
-				graph.connectNeighbor(direction, id01, id02)
-				graph.connectPassage(direction, id01, id02)
+		// mark self as 'active'.
+		cell01.status = 'active'
 
-				// transfer 'active' state to id02.
-				cell01.status = 'passive'
+		// TODO: await command to continue.
+		// ...
 
-				// recursively call with new neighbor.
-				recursiveDFT(graph, id02)
+		// keep track of whether there are unvisited neighbors.
+		let foundUnvisited: boolean = false
 
-				// mark self as 'active' once complete.
-				cell01.status = 'active'
+		// loop through Cell neighbors in a random order.
+		const eligibleDirs: Array<string> = Object.keys(cell01.neighbors)
+		const randomDirs: Array<string> = shuffle(eligibleDirs)
+		for (const direction of randomDirs) {
 
-				// TODO: await command to continue.
-				// ...
+			// identify the neighbor cell.
+			const id02: number|null = cell01.neighbors[direction]
+
+			// ensure neighbor exists
+			if (id02 !== null) {
+				const cell02: Cell = graph.data[id02]
+
+				// check for unvisited neighbors.
+				if (cell02.status === 'unvisited') {
+
+					// connect the cells
+					graph.connectNeighbor(direction, id01, id02)
+					graph.connectPassage(direction, id01, id02)
+
+					// transfer 'active' state to id02.
+					cell01.status = 'passive'
+
+					// found an unvisited value!
+					foundUnvisited = true
+
+					// add unvisited neighbor ID to stack.
+					push(id02)
+
+					// leave loop early since an unvisited was found.
+					break
+				}
 			}
 		}
-	}
 
-	// mark cell as completed; neighbors have been exhuasted.
-	cell01.status = 'complete'
+		// check if there were no unvisited neighbors.
+		if (!foundUnvisited) {
+
+			// since there were no unvisited neighbors...
+			// this cell is unequivically complete!
+			cell01.status = 'complete'
+
+			// remove id01 from the stack.
+			// id01 is on top, so pop() will remove it.
+			pop()
+		}
+	}
 }
