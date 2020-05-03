@@ -1,8 +1,8 @@
-import {HypercubeGraph, Cell} from 'tessellatron'
+import Graph, {Cell} from 'tessellatron'
 import {Queue, shuffle} from 'maze-utilities'
 
 export const iterativeBFT = (
-	graph: HypercubeGraph,
+	graph: Graph,
 	id: number,
 ) => {
 

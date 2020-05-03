@@ -1,9 +1,9 @@
-import {HypercubeGraph, Cell} from 'tessellatron'
+import Graph, {Cell} from 'tessellatron'
 import {Stack, shuffle} from 'maze-utilities'
 
 
 export const iterativeDFT = (
-	graph: HypercubeGraph,
+	graph: Graph,
 	id: number,
 ) => {
 	// create a stack to iterate through.
