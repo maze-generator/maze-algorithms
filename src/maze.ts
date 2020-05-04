@@ -1,63 +1,18 @@
-import Graph, {Cell} from 'tessellatron'
-import {shuffle} from '../helpers/main'
+import Graph from 'tessellatron'
+import {recursiveDepthFirst} from './generator/recursive-depth-first'
+import {iterativeDepthFirst} from './generator/iterative-depth-first'
+import {iterativeBreadthFirst} from './generator/iterative-breadth-first'
 
-/*********DEPTH-FIRST SEARCH*****************************/
-
-export const recursiveDFS = (
-	maze: Graph,
-	id01: number,
-): void => {
-
-	// create cell from id.
-	const cell01: Cell = maze.data[id01]
-
-	// mark self as 'active'.
-	cell01.status = 'active'
-
-	// TODO: await command to continue.
-	// ...
-
-	// loop through neighbors in a random order.
-	const eligibleDirs: Array<string> = Object.keys(cell01.neighbors)
-	const randomDirs: Array<string> = shuffle(eligibleDirs)
-	for (const direction of randomDirs) {
-		// identify the neighbor cell.
-		const id02: number|null = cell01.neighbors[direction]
-
-		// ensure neighbor exists
-		if (id02 !== null) {
-			const cell02: Cell = maze.data[id02]
-
-			// check for unvisited neighbors.
-			if (cell02.status === 'unvisited') {
-
-				// connect the cells
-				maze.connectNeighbor(direction, id01, id02)
-				maze.connectPassage(direction, id01, id02)
-
-				// transfer 'active' state to id02.
-				cell01.status = 'passive'
-
-				// recursively call with new neighbor.
-				recursiveDFS(maze, id02)
-			}
-
-			// mark self as 'active'.
-			cell01.status = 'active'
-		}
+export default class Maze extends Graph {
+	constructor (
+		dimensions: Array<number>,
+	) {
+		super(dimensions)
+		iterativeBreadthFirst(this, 0)
 	}
-
-	// mark cell as completed; neighbors have been exhuasted.
-	cell01.status = 'complete'
 }
 
-	/*********BREADTH-FIRST SEARCH***************************/
-
-	// ...
-	// ...
-
 /*
-
 	def shortest_path_bfs(self, paths=None, A=None, B=None):
 		'''
 		A = given starting node
@@ -179,21 +134,3 @@ export const recursiveDFS = (
 		if n > 0:
 			self.aerate_maze(n)
 */
-
-/***********************************************************
-This section describes footnotes & comments for the project.
-These should mostly contain bugs and todo items.
-
-== TODO ==
-Maze array should have a fixed size:
-size = maze length × maze height
-
-== TODO ==
-Maze class only supports 2D-Square mazes.
-Add support for ND-polyhedral mazes.
-
-== TODO ==
-Maze class only supports breadth-first traversal.
-Add support for other maze-generation algorithms.
-
-***********************************************************/
