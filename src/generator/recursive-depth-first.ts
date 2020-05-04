@@ -1,5 +1,5 @@
 import Graph, {Cell} from 'tessellatron'
-import {shuffle} from '../random'
+import {shuffle} from 'maze-utilities'
 
 export const recursiveDepthFirst = (
 	graph: Graph,
