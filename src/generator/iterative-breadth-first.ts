@@ -1,7 +1,7 @@
 import Graph, {Cell} from 'tessellatron'
 import {Queue, shuffle} from 'maze-utilities'
 
-export const iterativeBFT = (
+export const iterativeBreadthFirst = (
 	graph: Graph,
 	id: number,
 ) => {

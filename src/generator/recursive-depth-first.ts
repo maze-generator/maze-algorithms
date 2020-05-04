@@ -1,8 +1,7 @@
 import Graph, {Cell} from 'tessellatron'
 import {shuffle} from '../random'
 
-
-export const recursiveDFT = (
+export const recursiveDepthFirst = (
 	graph: Graph,
 	id01: number,
 ): void => {
@@ -39,7 +38,7 @@ export const recursiveDFT = (
 				cell01.status = 'passive'
 
 				// recursively call with new neighbor.
-				recursiveDFT(graph, id02)
+				recursiveDepthFirst(graph, id02)
 
 				// mark self as 'active' once complete.
 				cell01.status = 'active'
