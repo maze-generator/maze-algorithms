@@ -3,7 +3,7 @@ import {Stack, shuffle} from 'maze-utilities'
 
 export default class IterativeDepthFirst {
 	graph: any
-	stack!: Stack<number>
+	stack: Stack<number>
 
 	constructor (
 		graph: any,
@@ -16,7 +16,7 @@ export default class IterativeDepthFirst {
 		// create a stack to iterate through.
 		// this cannot be modified directly.
 		// instead, use pop, push, and peek.
-		this.stack == new Stack(id00)
+		this.stack = new Stack(id00)
 	}
 
 	* generator (
