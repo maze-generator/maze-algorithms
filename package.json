@@ -1,6 +1,6 @@
 {
 	"name": "maze-algorithms",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "Maze Algorithms provides various functions to create different mazes.",
 	"keywords": [
 		"maze",
