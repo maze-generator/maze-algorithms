@@ -1,90 +1,102 @@
 import Graph, {Cell} from 'tessellatron'
 import {Queue, shuffle} from 'maze-utilities'
 
-export const iterativeBreadthFirst = (
-	graph: Graph,
-	id: number,
-) => {
+export default class IterativeBreadthFirst {
+	graph: any
+	queue: Queue<number>
 
-	// create a queue to iterate with.
-	// this cannot be modified directly.
-	// instead, use enqueue, dequeue, and peek.
-	const queue: Queue<number> = new Queue()
+	constructor (
+		graph: any,
+		id00: number = 0,
+	) {
 
-	// add initial ID to queue.
-	queue.enqueue(id)
+		// take in the graph.
+		this.graph = graph
 
-	// loop through stack until it is empty.
-	while (queue.hasNodes) {
+		// create a queue to iterate with.
+		// this cannot be modified directly.
+		// instead, use enqueue, dequeue, and peek.
+		this.queue = new Queue(id00)
+	}
 
-		// peek this number from the stack.
-		const id01: number = queue.front()
+	* generator (
+	): Generator {
 
-		// identify current cell.
-		const cell01: Cell = graph.data[id01]
+		// loop through stack until it is empty.
+		while (this.queue.hasNodes) {
 
-		// mark self as 'active'.
-		cell01.status = 'active'
+			// peek this number from the stack.
+			const id01: number = this.queue.front()
 
-		// TODO: await command to continue.
-		// ...
+			// identify current cell.
+			const cell01: Cell = this.graph.data[id01]
 
-		// keep track of whether there are unvisited neighbors.
-		let foundUnvisited: boolean = false
+			// mark self as 'active'.
+			cell01.status = 'active'
 
-		// loop through Cell neighbors in a random order.
-		const eligibleDirs: Array<string> = Object.keys(cell01.neighbors)
-		const randomDirs: Array<string> = shuffle(eligibleDirs)
-		for (const direction of randomDirs) {
+			// await command to continue.
+			yield
 
-			// identify the neighbor cell.
-			const id02: number|null = cell01.neighbors[direction]
+			// keep track of whether there are unvisited neighbors.
+			let foundUnvisited: boolean = false
 
-			// ensure neighbor exists
-			if (id02 !== null) {
-				const cell02: Cell = graph.data[id02]
+			// loop through Cell neighbors in a random order.
+			const eligibleDirs: Array<string> = Object.keys(cell01.neighbors)
+			const randomDirs: Array<string> = shuffle(eligibleDirs)
+			for (const direction of randomDirs) {
 
-				// check for unvisited neighbors.
-				if (cell02.status === 'unvisited') {
+				// identify the neighbor cell.
+				const id02: number|null = cell01.neighbors[direction]
 
-					// connect the cells
-					graph.connectNeighbor(direction, id01, id02)
-					graph.connectPassage(direction, id01, id02)
+				// ensure neighbor exists
+				if (id02 !== null) {
+					const cell02: Cell = this.graph.data[id02]
 
-					// transfer 'active' state to id02.
-					cell01.status = 'passive'
-					cell02.status = 'active'
+					// check for unvisited neighbors.
+					if (cell02.status === 'unvisited') {
 
-					// TODO: await command to continue.
-					// ...
+						// connect the cells
+						this.graph.connectNeighbor(direction, id01, id02)
+						this.graph.connectPassage(direction, id01, id02)
 
-					// found an unvisited value!
-					foundUnvisited = true
+						// transfer 'active' state to id02.
+						cell01.status = 'passive'
+						cell02.status = 'active'
 
-					// add unvisited neighbor ID to stack.
-					queue.enqueue(id02)
+						// await command to continue.
+						yield
 
-					// remove active status;
-					// the next ID will become active now.
-					// eventually, id02 will be called upon again.
-					cell02.status = 'passive'
+						// found an unvisited value!
+						foundUnvisited = true
 
-					// leave loop early since an unvisited was found.
-					break
+						// add unvisited neighbor ID to stack.
+						this.queue.enqueue(id02)
+
+						// remove active status;
+						// the next ID will become active now.
+						// eventually, id02 will be called upon again.
+						cell02.status = 'passive'
+
+						// leave loop early since an unvisited was found.
+						break
+					}
 				}
+			}
+
+			// check if there were no unvisited neighbors.
+			if (!foundUnvisited) {
+
+				// since there were no unvisited neighbors...
+				// this cell is unequivically complete!
+				cell01.status = 'complete'
+
+				// remove id01 from the stack.
+				// id01 is on top, so pop() will remove it.
+				this.queue.dequeue()
 			}
 		}
 
-		// check if there were no unvisited neighbors.
-		if (!foundUnvisited) {
-
-			// since there were no unvisited neighbors...
-			// this cell is unequivically complete!
-			cell01.status = 'complete'
-
-			// remove id01 from the stack.
-			// id01 is on top, so pop() will remove it.
-			queue.dequeue()
-		}
+		// await command to continue.
+		yield
 	}
 }
