@@ -1,16 +1,30 @@
-import Graph from 'tessellatron'
-import {recursiveDepthFirst} from './generator/recursive-depth-first'
-import {iterativeDepthFirst} from './generator/iterative-depth-first'
-import {iterativeBreadthFirst} from './generator/iterative-breadth-first'
+import Graph, {GraphType} from 'tessellatron'
+// import RecursiveDepthFirst from './generator/recursive-depth-first'
+import IterativeDepthFirst from './generator/iterative-depth-first'
+import IterativeBreadthFirst from './generator/iterative-breadth-first'
 
-export default class Maze extends Graph {
-	constructor (
-		dimensions: Array<number>,
-	) {
-		super(dimensions)
-		iterativeBreadthFirst(this, 0)
+
+export default (
+	dimensions: Array<number>,
+	layout: string = 'hypercube',
+	algorithm: string = 'iterative depth-first traversal',
+): any => {
+
+	// initialize graph object
+	const graph = Graph(dimensions, layout)
+
+	// get the associated typing.
+	if (algorithm === 'iterative depth-first traversal') {
+		return new IterativeDepthFirst(graph)
+
+	} else if (algorithm === 'iterative breadth-first traversal') {
+		return new IterativeBreadthFirst(graph)
+
+	} else {
+		return new IterativeDepthFirst(graph)
 	}
 }
+
 
 /*
 	def shortest_path_bfs(self, paths=None, A=None, B=None):

@@ -2,7 +2,7 @@ import Graph, {Cell} from 'tessellatron'
 import {shuffle} from 'maze-utilities'
 
 export const recursiveDepthFirst = (
-	graph: Graph,
+	graph: any,
 	id01: number,
 ): void => {
 
