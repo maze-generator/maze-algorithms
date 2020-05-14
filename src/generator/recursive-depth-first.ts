@@ -1,54 +1,73 @@
 import Graph, {Cell} from 'tessellatron'
 import {shuffle} from 'maze-utilities'
 
-export const recursiveDepthFirst = (
-	graph: any,
-	id01: number,
-): void => {
+export default class RecursiveDepthFirst {
+	graph: any
+	start: number
 
-	// create cell from id.
-	const cell01: Cell = graph.data[id01]
+	constructor (
+		graph: any,
+		id00: number = 0,
+	) {
 
-	// mark self as 'active'.
-	cell01.status = 'active'
+		// take in the graph.
+		this.graph = graph
 
-	// TODO: await command to continue.
-	// ...
-
-	// loop through neighbors in a random order.
-	const eligibleDirs: Array<string> = Object.keys(cell01.neighbors)
-	const randomDirs: Array<string> = shuffle(eligibleDirs)
-	for (const direction of randomDirs) {
-
-		// identify the neighbor cell.
-		const id02: number|null = cell01.neighbors[direction]
-
-		// ensure neighbor exists
-		if (id02 !== null) {
-			const cell02: Cell = graph.data[id02]
-
-			// check for unvisited neighbors.
-			if (cell02.status === 'unvisited') {
-
-				// connect the cells
-				graph.connectNeighbor(direction, id01, id02)
-				graph.connectPassage(direction, id01, id02)
-
-				// transfer 'active' state to id02.
-				cell01.status = 'passive'
-
-				// recursively call with new neighbor.
-				recursiveDepthFirst(graph, id02)
-
-				// mark self as 'active' once complete.
-				cell01.status = 'active'
-
-				// TODO: await command to continue.
-				// ...
-			}
-		}
+		// start at the initial value
+		this.start = id00
 	}
 
-	// mark cell as completed; neighbors have been exhuasted.
-	cell01.status = 'complete'
+	* generator (
+		id01 = this.start
+	): Generator {
+
+		// create cell from id.
+		const cell01: Cell = this.graph.data[id01]
+
+		// mark self as 'active'.
+		cell01.status = 'active'
+
+		// await command to continue.
+		yield
+
+		// loop through neighbors in a random order.
+		const eligibleDirs: Array<string> = Object.keys(cell01.neighbors)
+		const randomDirs: Array<string> = shuffle(eligibleDirs)
+		for (const direction of randomDirs) {
+
+			// identify the neighbor cell.
+			const id02: number|null = cell01.neighbors[direction]
+
+			// ensure neighbor exists
+			if (id02 !== null) {
+				const cell02: Cell = this.graph.data[id02]
+
+				// check for unvisited neighbors.
+				if (cell02.status === 'unvisited') {
+
+					// connect the cells
+					this.graph.connectNeighbor(direction, id01, id02)
+					this.graph.connectPassage(direction, id01, id02)
+
+					// transfer 'active' state to id02.
+					cell01.status = 'passive'
+
+					// recursively call with new neighbor.
+					yield * this.generator(id02)
+
+					// mark self as 'active' once complete.
+					cell01.status = 'active'
+
+					// await command to continue.
+					yield
+				}
+			}
+		}
+
+		// mark cell as completed; neighbors have been exhuasted.
+		cell01.status = 'complete'
+
+		// await command to continue.
+		yield
+	}
 }
