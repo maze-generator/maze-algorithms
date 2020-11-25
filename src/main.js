@@ -1,3 +1,3 @@
-import Maze from './generator'
+import MazeGenerator from './generator.js'
 
-export default Maze
+export default MazeGenerator
