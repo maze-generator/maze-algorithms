@@ -1,6 +1,6 @@
 {
 	"name": "maze-algorithms",
-	"version": "0.2.1",
+	"version": "0.3.0",
 	"description": "Maze Algorithms provides various functions to create different mazes.",
 	"keywords": [
 		"maze",
@@ -18,21 +18,14 @@
 		"url": "https://github.com/noltron000/maze-algorithms/issues"
 	},
 	"type": "module",
-	"main": "lib/index.js",
+	"main": "./src/main.js",
 	"files": [
-		"lib/**/*"
+		"./src/*"
 	],
-	"dependencies": {
-		"maze-utilities": "^2.0.0",
-		"tessellatron": "^0.3.0"
-	},
-	"devDependencies": {
-		"ts-node": "^8.10.1",
-		"typescript": "^3.8.3"
-	},
+	"dependencies": {},
+	"devDependencies": {},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "ts-node src/index.ts",
-		"build": "tsc"
+		"start": "node ./src/main.js"
 	}
 }

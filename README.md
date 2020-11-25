@@ -3,7 +3,6 @@
 
 ## Commands
 ### `npm run test`
-### `npm run build`
 
 # Generator Documentation
 ## Parameters

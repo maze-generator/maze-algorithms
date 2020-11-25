@@ -1,13 +1,10 @@
-import Graph, {Cell} from 'tessellatron'
+import Graph from 'tessellatron'
 import {shuffle} from 'maze-utilities'
 
 export default class RecursiveDepthFirst {
-	graph: any
-	start: number
-
 	constructor (
-		graph: any,
-		id00: number = 0,
+		graph,
+		id00 = 0,
 	) {
 
 		// take in the graph.
@@ -17,12 +14,10 @@ export default class RecursiveDepthFirst {
 		this.start = id00
 	}
 
-	* generator (
-		id01 = this.start
-	): Generator {
+	* generator (id01 = this.start) {
 
 		// create cell from id.
-		const cell01: Cell = this.graph.data[id01]
+		const cell01 = this.graph.data[id01]
 
 		// mark self as 'active'.
 		cell01.status = 'active'
@@ -31,16 +26,16 @@ export default class RecursiveDepthFirst {
 		yield
 
 		// loop through neighbors in a random order.
-		const eligibleDirs: Array<string> = Object.keys(cell01.neighbors)
-		const randomDirs: Array<string> = shuffle(eligibleDirs)
+		const eligibleDirs = Object.keys(cell01.neighbors)
+		const randomDirs = shuffle(eligibleDirs)
 		for (const direction of randomDirs) {
 
 			// identify the neighbor cell.
-			const id02: number|null = cell01.neighbors[direction]
+			const id02 = cell01.neighbors[direction]
 
 			// ensure neighbor exists
 			if (id02 !== null) {
-				const cell02: Cell = this.graph.data[id02]
+				const cell02 = this.graph.data[id02]
 
 				// check for unvisited neighbors.
 				if (cell02.status === 'unvisited') {
