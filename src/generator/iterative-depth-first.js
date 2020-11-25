@@ -1,13 +1,10 @@
-import Graph, {Cell} from 'tessellatron'
+import Graphs from 'tessellatron'
 import {Stack, shuffle} from 'maze-utilities'
 
 export default class IterativeDepthFirst {
-	graph: any
-	stack: Stack<number>
-
 	constructor (
-		graph: any,
-		id00: number = 0,
+		graph,
+		id00 = 0,
 	) {
 
 		// take in the graph.
@@ -19,17 +16,16 @@ export default class IterativeDepthFirst {
 		this.stack = new Stack(id00)
 	}
 
-	* generator (
-	): Generator {
+	* generator () {
 
 		// loop through stack until it is empty.
 		while (this.stack.hasNodes) {
 
 			// peek this number from the stack.
-			const id01: number = this.stack.peek()
+			const id01 = this.stack.peek()
 
 			// identify current cell.
-			const cell01: Cell = this.graph.data[id01]
+			const cell01 = this.graph.data[id01]
 
 			// mark self as 'active'.
 			cell01.status = 'active'
@@ -38,19 +34,19 @@ export default class IterativeDepthFirst {
 			yield
 
 			// keep track of whether there are unvisited neighbors.
-			let foundUnvisited: boolean = false
+			let foundUnvisited = false
 
 			// loop through Cell neighbors in a random order.
-			const eligibleDirs: Array<string> = Object.keys(cell01.neighbors)
-			const randomDirs: Array<string> = shuffle(eligibleDirs)
+			const eligibleDirs = Object.keys(cell01.neighbors)
+			const randomDirs = shuffle(eligibleDirs)
 			for (const direction of randomDirs) {
 
 				// identify the neighbor cell.
-				const id02: number|null = cell01.neighbors[direction]
+				const id02 = cell01.neighbors[direction]
 
 				// ensure neighbor exists
 				if (id02 !== null) {
-					const cell02: Cell = this.graph.data[id02]
+					const cell02 = this.graph.data[id02]
 
 					// check for unvisited neighbors.
 					if (cell02.status === 'unvisited') {
