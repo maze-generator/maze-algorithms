@@ -1,6 +1,6 @@
 {
 	"name": "maze-algorithms",
-	"version": "0.3.5",
+	"version": "0.3.6",
 	"description": "Maze Algorithms provides various functions to create different mazes.",
 	"keywords": [
 		"maze",
@@ -23,8 +23,8 @@
 		"src/*"
 	],
 	"dependencies": {
-		"maze-utilities": "3.X",
-		"tessellatron": "0.X"
+		"maze-utilities": "~3.0.0",
+		"tessellatron": "~0.5.0"
 	},
 	"devDependencies": {},
 	"scripts": {
