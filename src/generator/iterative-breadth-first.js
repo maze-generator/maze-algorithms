@@ -4,7 +4,7 @@ import {Queue, shuffle} from 'maze-utilities'
 export default class IterativeBreadthFirst {
 	constructor (
 		graph,
-		id00 = 0,
+		id00 = undefined,
 	) {
 
 		// take in the graph.
@@ -13,7 +13,16 @@ export default class IterativeBreadthFirst {
 		// create a queue to iterate with.
 		// this cannot be modified directly.
 		// instead, use enqueue, dequeue, and peek.
-		this.queue = new Queue(id00)
+		this.queue = new Queue()
+
+		// if there is any nodes at all, choose a start node.
+		// then, add it to the selection queue.
+		if (this.graph.data.length > 0) {
+			if (id00 === undefined) {
+				id00 = Math.floor(Math.random() * this.graph.data.length)
+			}
+			this.queue.enqueue(id00)
+		}
 	}
 
 	* generator () {

@@ -4,7 +4,7 @@ import {Stack, shuffle} from 'maze-utilities'
 export default class IterativeDepthFirst {
 	constructor (
 		graph,
-		id00 = 0,
+		id00 = undefined,
 	) {
 
 		// take in the graph.
@@ -13,7 +13,16 @@ export default class IterativeDepthFirst {
 		// create a stack to iterate through.
 		// this cannot be modified directly.
 		// instead, use pop, push, and peek.
-		this.stack = new Stack(id00)
+		this.stack = new Stack()
+
+		// if there is any nodes at all, choose a start node.
+		// then, add it to the selection stack.
+		if (this.graph.data.length > 0) {
+			if (id00 === undefined) {
+				id00 = Math.floor(Math.random() * this.graph.data.length)
+			}
+			this.stack.push(id00)
+		}
 	}
 
 	* generator () {
